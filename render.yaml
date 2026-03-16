@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: openclaw
+    runtime: docker
+    plan: free
+    envVars:
+      - key: LLM_PROVIDER
+        value: nvidia
+      - key: NVIDIA_BASE_URL
+        value: https://integrate.api.nvidia.com/v1
+      - key: LLM_MODEL
+        value: meta/llama-3.1-8b-instruct
+      - key: NVIDIA_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: PORT
+        value: 10000
