@@ -4,15 +4,16 @@ echo "========================================="
 echo "  OpenClaw on Render - Starting..."
 echo "========================================="
 
-# Limit Node.js memory usage to fit within 512MB RAM free tier
-export NODE_OPTIONS="--max-old-space-size=400"
-
-# Start health check server in background (keeps Render alive)
-node /app/health-server.js &
+# Limit memory for the tiny health server
+node --max-old-space-size=64 /app/health-server.js &
 echo "✅ Health check server started on port ${PORT:-10000}"
 
-# Start OpenClaw gateway
+# Give OpenClaw the rest of the memory
+# We use NODE_OPTIONS so it applies to OpenClaw and any sub-processes it spawns
+export NODE_OPTIONS="--max-old-space-size=320"
+
 echo "🚀 Starting OpenClaw..."
+# Run openclaw
 openclaw start --non-interactive
 
 echo "✅ OpenClaw is running!"
